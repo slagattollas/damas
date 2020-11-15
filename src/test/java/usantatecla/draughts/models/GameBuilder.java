@@ -20,8 +20,9 @@ public class GameBuilder {
     }
     public GameBuilder board(String... rows){
         for (String row: rows) {
-            assert Pattern.matches("[bBnN ]{8}", row);
-            this.rows.add(row);
+            if(Pattern.matches("[bBnN ]{8}", row)){
+                this.rows.add(row);
+            }
         }
         return this;
     }
@@ -32,7 +33,6 @@ public class GameBuilder {
         Board board = new Board();
         Game game = new Game(board);
         this.changeColor(game, board);
-        assert this.rows.size() == Coordinate.getDimension();
         for (int i = 0; i < this.rows.size(); i++) {
             this.setBoard(board, i, this.rows.get(i));
         }
