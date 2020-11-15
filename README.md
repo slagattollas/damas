@@ -66,6 +66,24 @@
             <li><a href="#test">IsWithinTest</a></li>
             <li><a href="#test">getDirectionTest</a></li>
         </ul>
+        <h5>Views</h5>
+        <span>GameViewTest</span>
+        <ul>
+            <li><a href="#test">gameResultsTest</a></li>
+        </ul>
+        <span>PlayViewTest</span>
+        <ul>
+            <li><a href="#test">playCancelTest</a></li>
+            <li><a href="#test">playBadFormatTest</a></li>
+            <li><a href="#test">playCorrectMoveTest</a></li>
+            <li><a href="#test">playCorrectMoveDoubleTest</a></li>
+            <li><a href="#test">playCorrectMoveLostMessage</a></li>
+        </ul>
+        <span>ResumeViewTest</span>
+        <ul>
+            <li><a href="#test">resumeResetTest</a></li>
+            <li><a href="#test">resumeNextTest</a></li>
+        </ul>
     </div>
 </body>
 </html>
