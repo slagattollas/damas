@@ -11,7 +11,7 @@
 <body>
    <h1>Damas JUnit</h1>
    <div class="info">
-    <span id="author" class="author">Stefano Lagattolla</span><br>
+    <span id="author" class="author">Stefano Lagattolla </span><br>
     <span id="email" class="email"><a href="mailto:stefanolagattolla.s@gmail.com">stefanolagattolla.s@gmail.com</a></span><br>
     <span id="revnumber">version 0.1.1</span>
    </div>
