@@ -13,3 +13,31 @@ Cambiar primero metodos generales de model/Coordinate a utils/Coordinate
 * Pasar los metodos de substract y add Coordinate y hacer que devuelvan del tipo model (Sería mejor dejarlos en Coordinate?) O solo dejar los metodos gets y sets en utils? 
 Preguntar al profesor****
 * Correr las pruebas (Todas las prueban pasaron)
+
+Agregar en la clase Color una enum de NULL_COLOR (NULL_OBJECT)
+* Agregarlo en el enum 
+* Crearnos un metodo de isNull()
+* Cambiar el metodo isInitialRow para que en ves de retornar null, retorne un NULL_COLOR 
+* Cambiarlo en cada sitio que utiliza la funcion isInitialRow para que implemente el isNull
+* Correr las pruebas y verificar que todo bien
+
+Cambiar Views a un View entero con todo 
+* Pasar cada metodo y renombrarlo
+* Cambiar el metodo de ejecución del interact de controles en el view 
+* Exportar clases necesarias para que todo funcione
+* Configurar variables finales
+* Renombrar variables (utilizar una clase para tener todas las variables
+* Hacer que la clase viewComplete extienda de subview
+* Añadir el YesNoDialog en el subView 
+* Añadir todas las variables finales a subView para limpiar un poco ViewComplete
+* Cambiar play, resume y start por sus funciones (Sería lo ideal?). 
+* Modificar las pruebas 
+* Correr las pruebas y verificar que todo funcione 
+* Ultimo, cambiar en el main que interactue con el viewComplete
+
+Crear cadena de responsabilidad (checkers de board) 
+* Crear clase abstracta de Checker y ponerle los metodos necesarios de cadena
+* Crearse los diferentes tipos de checkers (en mi caso para probarlos son correctTurnChecker y EmptyBoardChecker
+* Al inicializar el game definir la cadena de responsabilidad de los checkers e inicializarlos 
+* En el metodo de move sustituir los ifs por checkers 
+* Correr las pruebas y que todo funcione bien

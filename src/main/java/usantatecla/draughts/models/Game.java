@@ -1,5 +1,9 @@
 package usantatecla.draughts.models;
 
+import usantatecla.draughts.models.checkers.Checker;
+import usantatecla.draughts.models.checkers.CorrectTurnChecker;
+import usantatecla.draughts.models.checkers.EmptyBoardChecker;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -7,10 +11,12 @@ public class Game {
 
 	private Board board;
 	private Turn turn;
-
+	private Checker checker;
 	Game(Board board) {
 		this.turn = new Turn();
 		this.board = board;
+		this.checker = new CorrectTurnChecker(this);
+		this.checker.linkWith(new EmptyBoardChecker(this));
 	}
 
 	public Game() {
@@ -54,13 +60,10 @@ public class Game {
 	private Error isCorrectPairMove(int pair, Coordinate... coordinates) {
 		assert coordinates[pair] != null;
 		assert coordinates[pair + 1] != null;
-		if (board.isEmpty(coordinates[pair]))
-			return Error.EMPTY_ORIGIN;
-		if (this.turn.getOppositeColor() == this.board.getColor(coordinates[pair]))
-			return Error.OPPOSITE_PIECE;
-		if (!this.board.isEmpty(coordinates[pair + 1]))
-			return Error.NOT_EMPTY_TARGET;
-		List<Piece> betweenDiagonalPieces = 
+		Error error = this.checker.check(pair, coordinates);
+		if(error != null)
+			return error;
+		List<Piece> betweenDiagonalPieces =
 			this.board.getBetweenDiagonalPieces(coordinates[pair], coordinates[pair + 1]);
 		return this.board.getPiece(coordinates[pair]).isCorrectMovement(betweenDiagonalPieces, pair, coordinates);
 	}
@@ -144,12 +147,15 @@ public class Game {
 		assert coordinate != null;
 		return this.board.getColor(coordinate);
 	}
+	public boolean boardIsEmpty(Coordinate coordinate){
+		return this.board.isEmpty(coordinate);
+	}
 
 	public Color getTurnColor() {
 		return this.turn.getColor();
 	}
 
-	private Color getOppositeTurnColor() {
+	public Color getOppositeTurnColor() {
 		return this.turn.getOppositeColor();
 	}
 
