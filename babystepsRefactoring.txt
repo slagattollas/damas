@@ -1,0 +1,15 @@
+Refactoring -> Sábado 12:30
+Cambio de Direction.class a /utils (Solo se usa en Coordinate):
+- Reducir cantidad de clases en models
+- Permite el traspaso de Coordinate a utils para utilizar todo de utils 
+* Migrar todos los metodos de model/Direction a utils/Direction
+* Baby steps para hacer que model/Coordinate funcione con utils/Direction
+* Correr test de DirectionTest y CoordinateTest funcionan con la migración a utils
+Cambio de Coordinate de /models a /utils
+* Hacer model/Coordinate extends de utils/Coordinate
+* super(row, column) en el constructor para que utilicen variables de extend
+Cambiar primero metodos generales de model/Coordinate a utils/Coordinate
+* Pasar los metodos getRow, getColumn y getBlacks a Coordinate para que funcione utils/Directions
+* Pasar los metodos de substract y add Coordinate y hacer que devuelvan del tipo model (Sería mejor dejarlos en Coordinate?) O solo dejar los metodos gets y sets en utils? 
+Preguntar al profesor****
+* Correr las pruebas (Todas las prueban pasaron)
