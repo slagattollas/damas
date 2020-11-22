@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-public class Board {
+class Board {
 
     private Piece[][] pieces;
 
@@ -44,16 +44,6 @@ public class Board {
                 if (piece != null)
                     betweenDiagonalPieces.add(piece);
             }
-        return betweenDiagonalPieces;
-    }
-
-    int getAmountBetweenDiagonalPieces(Coordinate origin, Coordinate target) {
-        if (!origin.isOnDiagonal(target))
-            return 0;
-        int betweenDiagonalPieces = 0;
-        for (Coordinate coordinate : origin.getBetweenDiagonalCoordinates(target))
-            if (this.getPiece(coordinate) != null)
-                betweenDiagonalPieces++;
         return betweenDiagonalPieces;
     }
 

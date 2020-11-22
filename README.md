@@ -1,89 +1,178 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-<meta charset="UTF-8">
-<meta http-equiv="X-UA-Compatible" content="IE=edge">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<meta name="author" content="Stefano Lagattolla">
-<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Open+Sans:300,300italic,400,400italic,600,600italic%7CNoto+Serif:400,400italic,700,700italic%7CDroid+Sans+Mono:400,700">
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
-</head>
-<body>
-   <h1>Damas JUnit</h1>
-   <div class="info">
-    <span id="author" class="author">Stefano Lagattolla</span><br>
-    <span id="email" class="email"><a href="mailto:stefanolagattolla.s@gmail.com">stefanolagattolla.s@gmail.com</a></span><br>
-    <span id="revnumber">version 0.1.1</span>
-   </div>
-   <div id="indice">
-        <ul>
-            <li><a href="#test">Script Tests</a></li>
-        </ul>
-   </div>
-    <div id="test">
-        <h5>Controllers</h5>
-        <span>ResumeController</span>
-        <ul>
-            <li><a href="#test">ResumeTest</a></li>
-        </ul>
-        <span>PlayController</span>
-        <ul>
-            <li><a href="#test">PlayControllerMoveTest</a></li>
-            <li><a href="#test">PlayControllerCancelTest</a></li>
-            <li><a href="#test">PlayControllerIsBlocked</a></li>
-        </ul>
-        <h5>Models</h5>
-        <span>GameTest</span>
-        <ul>
-            <li><a href="#test">testGameReset</a></li>
-            <li><a href="#test">testStartGameCorrect</a></li>
-            <li><a href="#test">testStartGameCIncorrect</a></li>
-            <li><a href="#test">testGameCancel</a></li>
-        </ul>
-        <span>MoveTest</span>
-        <ul>
-            <li><a href="#test">correctMoveTwoSpaceDamaTest</a></li>
-            <li><a href="#test">correctMoveEatDamaTest</a></li>
-            <li><a href="#test">correctMovePawnTest</a></li>
-            <li><a href="#test">correctMoveEatPawnTest</a></li>
-            <li><a href="#test">incorrectMoveEmptyOrigin</a></li>
-            <li><a href="#test">incorrectMoveOppositePiece</a></li>
-            <li><a href="#test">incorrectMoveNotEmptyTarget</a></li>
-            <li><a href="#test">incorrectMoveTooMuchJumps</a></li>
-        </ul>
-        <span>PiecesTest</span>
-        <ul>
-            <li><a href="#test">correctIsAdvanced</a></li>
-            <li><a href="#test">incorrectIsAdvanced</a></li>
-        </ul>
-        <span>DirectionTest</span>
-        <ul>
-            <li><a href="#test">correctDirectionTest</a></li>
-            <li><a href="#test">incorrectDirectionTest</a></li>
-        </ul>
-        <span>CoordinateTest</span>
-        <ul>
-            <li><a href="#test">IsWithinTest</a></li>
-            <li><a href="#test">getDirectionTest</a></li>
-        </ul>
-        <h5>Views</h5>
-        <span>GameViewTest</span>
-        <ul>
-            <li><a href="#test">gameResultsTest</a></li>
-        </ul>
-        <span>PlayViewTest</span>
-        <ul>
-            <li><a href="#test">playCancelTest</a></li>
-            <li><a href="#test">playBadFormatTest</a></li>
-            <li><a href="#test">playCorrectMoveTest</a></li>
-            <li><a href="#test">playCorrectMoveDoubleTest</a></li>
-            <li><a href="#test">playCorrectMoveLostMessage</a></li>
-        </ul>
-        <span>ResumeViewTest</span>
-        <ul>
-            <li><a href="#test">resumeResetTest</a></li>
-            <li><a href="#test">resumeNextTest</a></li>
-        </ul>
-    </div>
-</body>
-</html>
+# Damas
+Diego Fernández Aceves - dfera10@gmail.com
+
+## Índice
+* [Modelo del dominio](#Modelo-del-dominio)
+* [Requisitos](#Requisitos)
+* [Vista de casos de uso](#Vista-de-casos-de-uso)
+   * [Prototipo de interfaz](#Prototipo-de-interfaz)
+   
+## Modelo del dominio
+
+[Wiki](https://en.wikipedia.org/wiki/Draughts)
+
+[Youtube](https://www.youtube.com/watch?v=bN8VO8Nt0ws)
+
+* Elementos: **dos jugadores**, un **tablero de ajedrez**, con una esquina blanca a la derecha de cada jugador, y **fichas blancas y negras**, para los dos jugadores, **12 peones y 2 damas**.
+
+* En el **estado inicial** de la partida se colocan todas los peones de cada jugador en los **cuadros negros** de las **tres filas más cercanas a éste**, como en la siguiente imagen.
+
+* Los **jugadores mueven alternativamente** una de sus fichas, **empezando** por el jugador de las fichas **blancas**, de una de las siguientes maneras:
+
+    * un **peón de una casilla puede mover a una de las dos casillas adyacentes en diagonal y hacia adelante**, si ésta está **vacia**
+
+    * un **peón de una casilla puede mover a una de las dos casillas adyacentes de las adyacentes en diagonal y hacia adelante**, si ésta esta **vacía** y la adyacente está **ocupada por un ficha contraria** repitiendo este mismo movimiento hasta 3 veces desde la nueva casilla. Todas las fichas contrarias "**saltadas**" en este momvimiento se **retiran del tablero**
+
+    * en cualquiera de los dos casos anteriores, si un **peón termina su movimiento en la última fila del tablero**, se convierte en **dama**.
+
+    * una **dama de una casilla puede mover a una de las casillas diagonales**, si existe como **máximo una ficha contraria**, repitiendo este mismo movimiento hasta 3 veces desde la nueva casilla. Todas las fichas contrarias "**saltadas**" se **retiran del tablero**
+
+* **Pierde el jugador que no puede realizar movimientos**, porque **no se cumplen las condiciones** para el movimiento de todas sus fichas o que ya **no hay fichas** sobre el tablero
+
+![Draughts](https://github.com/TheMercuryBeat/Draughts/blob/main/docs/images/draughtsModeloDominio.svg?raw=true)
+
+### Requisitos
+* Funcionalidad: Básica
+
+* Interfaz: Texto
+
+* Distribución: Standalone
+
+* Persistencia: No
+
+![DraughtsBoard](https://github.com/TheMercuryBeat/Draughts/blob/main/docs/images/draughts.jpg?raw=true)
+
+
+## Vista de casos de uso
+| Diagramas de Actores y Casos de Uso | Diagrama de Contexto           |
+| ----------------------------------- | ------------------------------ |
+| ![ActoresCasosUso](https://github.com/TheMercuryBeat/Draughts/blob/main/docs/images/diagramaActoresCasosUso.svg?raw=true) | ![Contexto](https://github.com/TheMercuryBeat/Draughts/blob/main/docs/images/diagtamaContexto.svg?raw=true) |
+
+### Prototipo de interfaz
+
+Arranque
+```
+Las Damas!!!
+
+ 12345678
+1 n n n n1
+2n n n n 2
+3 n n n n3
+4        4
+5        5
+6b b b b 6
+7 b b b b7
+8b b b b 8
+ 12345678
+Mueven las blancas: 61.52
+
+ 12345678
+1 n n n n1
+2n n n n 2
+3 n n n n3
+4        4
+5 b      5
+6  b b b 6
+7 b b b b7
+8b b b b 8
+ 12345678
+Mueven las negras: 32,43
+
+ 12345678
+1 n n n n1
+2n n n n 2
+3   n n n3
+4  n     4
+5 b      5
+6  b b b 6
+7 b b b b7
+8b b b b 8
+ 12345678
+ Mueven las ...
+```
+
+Pierden las negras por bloqueo y continuan jugando
+```
+12345678
+1        1
+2        2
+3        3
+4        4
+5        5
+6        6
+7 n      7
+8b       8
+ 12345678
+Derrota!!! No puedes mover tus fichas!!!
+¿Queréis jugar otra? (s/n): s
+
+Las Damas!!!
+
+ 12345678
+1 n n n n1
+2n n n n 2
+3 n n n n3
+4        4
+5        5
+6b b b b 6
+7 b b b b7
+8b b b b 8
+ 12345678
+```
+
+Peón convertido en dama
+```
+ 12345678
+1        1
+2        2
+3 n      3
+4n b     4
+5        5
+6        6
+7 b      7
+8        8
+ 12345678
+Mueven las negras: 72,83
+
+ 12345678
+1        1
+2        2
+3 n      3
+4n b     4
+5        5
+6        6
+7        7
+8  B     8
+ 12345678
+ Mueven las ...
+```
+
+Posibles errores
+```
+Error!!! No te entiendo: <d><d>{,<d><d>}[0-2]
+Error!!! No es una coordenada del tablero
+Error!!! No hay ficha que mover
+Error!!! No es una de tus fichas
+Error!!! No vas en diagonal
+Error!!! No está vacío el destino
+Error!!! No comes contrarias
+Error!!! No se puede comer tantas en un movimiento
+Error!!! No avanzas
+Error!!! No respetas la distancia
+Error!!! No se puede comer tantas en un salto
+```
+Pierden las blancas sin fichas y no continuan jugando
+```
+12345678
+1        1
+2        2
+3        3
+4        4
+5        5
+6  n n   6
+7 n      7
+8  N     8
+ 12345678
+Derrota!!! No puedes mover tus fichas!!!
+¿Queréis jugar otra? (s/n): s
+```

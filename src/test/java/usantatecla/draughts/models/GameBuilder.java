@@ -1,56 +1,39 @@
 package usantatecla.draughts.models;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.regex.Pattern;
+import static java.lang.Character.isLowerCase;
+import static java.util.Objects.nonNull;
 
 public class GameBuilder {
 
-    private Color color;
-    private List<String> rows;
+    private final Board board;
 
     public GameBuilder() {
-        this.color = null;
-        this.rows = new ArrayList<String>();
+        this.board = new Board();
     }
 
-    public GameBuilder color(Color color){
-        this.color = color;
-        return this;
-    }
-    public GameBuilder board(String... rows){
-        for (String row: rows) {
-            if(Pattern.matches("[bBnN ]{8}", row)){
-                this.rows.add(row);
+    public GameBuilder board(String... board) {
+
+        for (int indexRow = 0; indexRow < board.length; indexRow++) {
+            String row = board[indexRow];
+
+            for (int indexColumn = 0; indexColumn < row.length(); indexColumn++) {
+                Color color = getColor(row.charAt(indexColumn));
+
+                if (nonNull(color)) {
+
+                    boolean isPawn = isLowerCase(row.charAt(indexColumn));
+                    Piece piece = isPawn ? new Pawn(color) : new Draught(color);
+
+                    this.board.put(new Coordinate(indexRow, indexColumn), piece);
+                }
             }
         }
+
         return this;
     }
-    public Game build(){
-        if(this.rows.size() == 0){
-            return new Game();
-        }
-        Board board = new Board();
-        Game game = new Game(board);
-        this.changeColor(game, board);
-        for (int i = 0; i < this.rows.size(); i++) {
-            this.setBoard(board, i, this.rows.get(i));
-        }
-        return game;
-    }
-    public void setBoard(Board board, int index, String row){
-        for (int j = 0; j < row.length(); j++) {
-            Color color = this.getColor(row.charAt(j));
-            if (color != null) {
-                Piece piece = new Pawn(color);
-                if (Character.isUpperCase(row.charAt(j)))
-                    piece = new Draught(color);
-                board.put(new Coordinate(index, j), piece);
-            }
-        }
-    }
-    private Color getColor(char character) {
-        switch (character) {
+
+    private Color getColor(char color) {
+        switch (color) {
             case 'b':
             case 'B':
                 return Color.WHITE;
@@ -61,11 +44,10 @@ public class GameBuilder {
                 return null;
         }
     }
-    private void changeColor(Game game, Board board) {
-        if (this.color == Color.BLACK) {
-            board.put(new Coordinate(5, 0), new Pawn(Color.WHITE));
-            game.move(new Coordinate(5, 0), new Coordinate(4, 1));
-            board.remove(new Coordinate(4, 1));
-        }
+
+    public Game build() {
+        return new Game(this.board);
     }
+
+
 }

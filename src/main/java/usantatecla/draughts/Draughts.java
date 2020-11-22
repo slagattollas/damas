@@ -2,15 +2,15 @@ package usantatecla.draughts;
 
 import usantatecla.draughts.controllers.Logic;
 import usantatecla.draughts.controllers.InteractorController;
-import usantatecla.draughts.views.View;
+import usantatecla.draughts.views.ViewComplete;
 
 class Draughts {
     
-    private View view;
+    private ViewComplete view;
     private Logic logic;
 
     private Draughts(){
-        this.view = new View();
+        this.view = new ViewComplete();
         this.logic = new Logic();
     }
 

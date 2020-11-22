@@ -1,68 +1,66 @@
 package usantatecla.draughts.views;
 
+import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
-import org.mockito.ArgumentCaptor;
-import org.mockito.Captor;
 import org.mockito.InjectMocks;
-import org.mockito.Mock;
-import usantatecla.draughts.controllers.PlayController;
+import org.mockito.MockitoAnnotations;
+import org.mockito.Spy;
+import usantatecla.draughts.controllers.StartController;
 import usantatecla.draughts.models.Game;
-import usantatecla.draughts.models.GameBuilder;
 import usantatecla.draughts.models.State;
 import usantatecla.draughts.utils.Console;
 
-import static org.junit.Assert.assertEquals;
-import static org.mockito.Mockito.times;
-import static org.mockito.Mockito.verify;
-import static org.mockito.MockitoAnnotations.initMocks;
+import java.io.ByteArrayOutputStream;
+import java.io.PrintStream;
 
-public class GameViewTest {
-    @Mock
-    Console console;
+import static org.junit.Assert.assertEquals;
+import static org.mockito.Mockito.spy;
+
+public class GameViewTest extends SubViewTest {
+
+    private final PrintStream standardOut = System.out;
+    private final ByteArrayOutputStream outputStreamCaptor = new ByteArrayOutputStream();
+
+    private StartController startController;
+
+    @Spy
+    private Console console;
+
     @InjectMocks
-    GameView gameView;
-    @Captor
-    ArgumentCaptor<String> strings;
+    private GameView gameView;
 
     @Before
-    public void before(){
-        initMocks(this);
+    public void beforeGameView() {
+        System.setOut(new PrintStream(outputStreamCaptor));
+
+        MockitoAnnotations.initMocks(this);
+        startController = spy(new StartController(new Game(), new State()));
+    }
+
+    @After
+    public void tearDown() {
+        System.setOut(standardOut);
     }
 
     @Test
-    public void gameResultsTest(){
-        Game game = new GameBuilder().build();
-        PlayController playController = new PlayController(game, new State());
-        this.gameView.write(playController);
-        verify(console, times(90)).write(strings.capture());
-        String[] rowsResult = {
-                " 12345678",
-                "1 n n n n",
-                "2n n n n ",
-                "3 n n n n",
-                "4        ",
-                "5        ",
-                "6b b b b ",
-                "7 b b b b",
-                "8b b b b ",
-                " 12345678"
-        };
-        assertEquals(rowsResult,concatResult(strings));
-    }
+    public void testBoard() {
 
-    public String[] concatResult(ArgumentCaptor<String> strings){
-        String string = "";
-        String[] arrStrings = new String[10];
-        int i = 0;
-        for (String s : strings.getAllValues()){
-            string += s;
-            if(string.length() == 9){
-                arrStrings[i] = string;
-                i++;
-                string = "";
-            }
-        }
-        return arrStrings;
+        //@formatter:off
+        String board =
+                " 12345678\n" +
+                "1 n n n n1\n" +
+                "2n n n n 2\n" +
+                "3 n n n n3\n" +
+                "4        4\n" +
+                "5        5\n" +
+                "6b b b b 6\n" +
+                "7 b b b b7\n" +
+                "8b b b b 8\n" +
+                " 12345678\n";
+        //@formatted:on
+
+        gameView.write(startController);
+        assertEquals(board, outputStreamCaptor.toString());
     }
 }
